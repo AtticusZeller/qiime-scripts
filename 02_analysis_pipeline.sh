@@ -43,7 +43,23 @@ mkdir -p "$WORK_DIR"
 # 数据库路径 (请确保这里指向你 01 脚本生成的真实路径)
 # 建议使用绝对路径，防止目录切换导致找不到
 DB_BASE_DIR="$PWD/database" 
-CLASSIFIER_PATH="$DB_BASE_DIR/silva-138.1-ssu-nr99-338f-806r-classifier.qza"
+# === 自动判断使用哪个分类器 ===
+# 逻辑：检查文件名或路径中是否包含 v1-v2 或 v3-v4
+if [[ "$INPUT_LIST" == *"v1-v2"* ]]; then
+    PRIMER_TYPE="27f-338r"
+elif [[ "$INPUT_LIST" == *"v3-v4"* ]]; then
+    PRIMER_TYPE="338f-806r"
+else
+    # 默认回退或者报错
+    PRIMER_TYPE="338f-806r"
+    echo "[WARNING] 无法从文件名识别区域，默认使用 $PRIMER_TYPE"
+fi
+
+# 设置分类器路径
+CLASSIFIER_PATH="$DB_BASE_DIR/silva-138.1-ssu-nr99-${PRIMER_TYPE}-classifier.qza"
+
+echo "[CONFIG] 检测到引物类型: $PRIMER_TYPE"
+echo "[CONFIG] 使用分类器: $CLASSIFIER_PATH"
 
 # 单个任务内部使用的线程数
 # 注意：如果你由 03 脚本并发调用，这里不要设置太大，否则服务器会卡死
@@ -51,12 +67,11 @@ CLASSIFIER_PATH="$DB_BASE_DIR/silva-138.1-ssu-nr99-338f-806r-classifier.qza"
 THREADS=8
 
 # --- 控制流程 ---
-START_STEP=5
+START_STEP=2
 FORCE_RUN=true
 
 # --- 环境激活 ---
-source ~/.bashrc
-eval "$(conda shell.bash hook)"
+eval "$(conda shell.zsh hook)"
 conda activate qiime2-amplicon-2024.5 || { echo "环境激活失败"; exit 1; }
 export PATH=~/.aspera/connect/bin:$PATH
 
