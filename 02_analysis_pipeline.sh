@@ -71,7 +71,7 @@ START_STEP=2
 FORCE_RUN=true
 
 # --- 环境激活 ---
-eval "$(conda shell.zsh hook)"
+source ~/miniconda3/etc/profile.d/conda.sh
 conda activate qiime2-amplicon-2024.5 || { echo "环境激活失败"; exit 1; }
 export PATH=~/.aspera/connect/bin:$PATH
 

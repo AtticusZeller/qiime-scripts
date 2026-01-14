@@ -14,6 +14,7 @@ THREADS=16
 mkdir -p $DB_DIR
 
 # --- 2. 环境与 Aspera (保持不变) ---
+source ~/miniconda3/etc/profile.d/conda.sh
 echo "[INFO] === 第一步：检查并安装 Conda 环境 ==="
 if conda info --envs | grep -q "qiime2-amplicon-2024.5"; then
     echo "[INFO] 环境 qiime2-amplicon-2024.5 已存在，跳过安装。"
@@ -23,7 +24,6 @@ else
     conda env create -n qiime2-amplicon-2024.5 --file https://data.qiime2.org/distro/amplicon/qiime2-amplicon-2024.5-py39-linux-conda.yml
 fi
 
-eval "$(conda shell.zsh hook)"
 conda activate qiime2-amplicon-2024.5
 
 echo "[INFO] === 第二步：检查并安装 Aspera Connect ==="
