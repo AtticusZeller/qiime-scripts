@@ -49,6 +49,8 @@ if [[ "$INPUT_LIST" == *"v1-v2"* ]]; then
     PRIMER_TYPE="27f-338r"
 elif [[ "$INPUT_LIST" == *"v3-v4"* ]]; then
     PRIMER_TYPE="338f-806r"
+elif [[ "$INPUT_LIST" == *"v4"* ]]; then
+    PRIMER_TYPE="515f-805r"
 else
     # 默认回退或者报错
     PRIMER_TYPE="338f-806r"
